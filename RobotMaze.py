@@ -8,7 +8,7 @@ import pygame
 from pygame.locals import *
 import sys
 import numpy as np
-from numpy import random
+#from numpy import random
 import random
 
 def make_game_basics(res, game_title):
@@ -40,9 +40,9 @@ def make_rect_with_text(surface, color, c1, c2, w, h, text, text_c1, text_c2):
 
     # Finish the function
 
-def gridCoords(cellSize):
+def gridCoords(cellSize, width, height):
 
-    cells_coords = []
+    cells_coords = [] 
     for x in range(0, width, cellSize):
         for y in range(0, height-90, cellSize):
             cells_coords.append((x,y))
@@ -53,15 +53,14 @@ def drawGrid(surface, color, cells_coords, cellSize):
 
     rects_coords = []
     for item in cells_coords:
-      pygame.draw.rect(surface, color, (item[0], item[1], cellSize, cellSize))
-      rects_coords.append((item[0], item[1], cellSize, cellSize))
-
+        pygame.draw.rect(surface, color, (item[0], item[1], cellSize, cellSize), 1) # added 1 to draw only outline
+        rects_coords.append((item[0], item[1], cellSize, cellSize))
         # Finish the code
 
     return(rects_coords)
 
 def drawRobot(surface, color, robot_coords, cellSize):
-  pygame.draw.circle(surface, color, (robot_coords[0]+cellSize/2, robot_coords[1]-cellSize/2), cellSize/2)
+  pygame.draw.circle(surface, color, (robot_coords[0]+cellSize//2, robot_coords[1]+cellSize//2), cellSize//2)
   return robot_coords
 
     # Finish the function
@@ -80,12 +79,13 @@ def drawObstacles(surface, color, obstacle_coords, cellSize):
 
 def sample_cells(cells, number=1):
 
+    cells_copy = cells.copy()
     robot_cell = (75, 300)
     goal_cell = (600,300)
-    cells.remove(robot_cell)
-    cells.remove(goal_cell)
+    cells_copy.remove(robot_cell)
+    cells_copy.remove(goal_cell)
 
-    return robot_cell, goal_cell, random.sample(cells, number)
+    return robot_cell, goal_cell, random.sample(cells_copy, number)
 
 
 def legalMove(robot, clicked, rect_coords, obstacles, width, height, cellSize):
@@ -185,8 +185,8 @@ win_game = make_text(bigfont, "Fantastic!", 'black')
 # Here we decide where do we want our quit game and new game buttons to be and how large we want them to be
 # The numbers given are for the tested implementation, the one in the attached picture.
 
-quit_button_coords = [0, 300, 150, 40]
-new_game_button_coords = [150, 300, 150, 40]
+quit_button_coords = [0, 750, 150, 40]
+new_game_button_coords = [150, 750, 150, 40]
 
 # Initializing the size of each grid cell
 cellSize = 75
@@ -200,7 +200,7 @@ def main():
     # Initialize the robot starting cell, the goal cell and the obstacle cells [3 Points]
     # Start with number = 10 obstacle cells in the sample_cells function
 
-    grid_coords = gridCoords(cellSize)
+    grid_coords = gridCoords(cellSize, width, height)
     robot_coords, goal_coords, obstacle_coords = sample_cells(grid_coords, 10)
 
     #all_coords =
@@ -240,12 +240,12 @@ def main():
         make_rect_with_text(screen, colors["gray"], quit_button_coords[0],
                         quit_button_coords[1], quit_button_coords[2],
                         quit_button_coords[3],
-                        screen, quit_button_coords[0]+(quit_game_size[0]/2)-50,
+                        quit_game[0], quit_button_coords[0]+(quit_game_size[0]/2)-50,
                        quit_button_coords[1] + (quit_game_size[1]/2)-5)
 
         # Task 5.6 [4 Points]: Following the example above, use the make_rect_with_text function to create the new game button
         make_rect_with_text(screen, colors['gray'], new_game_button_coords[0], new_game_button_coords[1],
-                            new_game_button_coords[2], new_game_button_coords[3], screen,
+                            new_game_button_coords[2], new_game_button_coords[3], new_game[0],
                             new_game_button_coords[0]+(new_game_size[0]/2)-50,
                             new_game_button_coords[1] + (new_game_size[1]/2)-5)
 
@@ -267,7 +267,7 @@ def main():
                     sys.exit()
 
                 if new_game_button_coords[0] <= mouse[0] <= new_game_button_coords[0]+200 and new_game_button_coords[1] <= mouse[1] <= new_game_button_coords[1]+50:
-                    main()
+                    return main()
 
                 # if the mouse clicks on a cell, then we need to see, is it a free legal cell? and therefore move the robot there
 
