@@ -113,11 +113,13 @@ def legalMove(robot, clicked, rect_coords, obstacles, width, height, cellSize):
         cell_y = (y // cellSize) * cellSize
         target = (cell_x, cell_y)
         if target not in rect_coords:
-          return new_robot_x, new_robot_y
+            return new_robot_x, new_robot_y
         neighbours = get_valid_neighbours(robot, rect_coords, cellSize, obstacles)
         if target in neighbours:
-          new_robot_x , new_robot_y = target
-          return new_robot_x, new_robot_y
+            new_robot_x , new_robot_y = target
+            return new_robot_x, new_robot_y
+        
+    return new_robot_x, new_robot_y # returns current position if all else fails
 
 def reachedGoal(goal, current):
     ''' Have we reached the goal cell?
@@ -283,7 +285,7 @@ def main():
         # if the flag is true, it means we reached the goal and the congratulatory message should appear
         if reached_goal_flag == True:
             make_rect_with_text(screen, colors["gray"], 150-win_game_size[0]/2, 120-win_game_size[1]/2, win_game_size[0], win_game_size[1]+60,
-                        win_game, 150-(win_game_size[0]/2),
+                        win_game[0], 150-(win_game_size[0]/2),
                        120 + (win_game_size[1]/2))
 
         # There always need to be a display update, so that, while the game runs, the objects that we wish appear on our screen
