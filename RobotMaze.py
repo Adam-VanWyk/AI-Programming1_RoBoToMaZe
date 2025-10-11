@@ -275,6 +275,10 @@ def main():
                 # and update the path list. Then, using the reachedGoal function, check if the robot has reached the goal
                 # and if so, activate the corresponding flag
 
+                robot_coords = legalMove((robot_coords), (mouse), grid_coords, obstacle_coords, width, height, cellSize)
+                path.append(robot_coords)
+                if reachedGoal(goal_coords, robot_coords):
+                    reached_goal_flag = True
 
         # if the flag is true, it means we reached the goal and the congratulatory message should appear
         if reached_goal_flag == True:
