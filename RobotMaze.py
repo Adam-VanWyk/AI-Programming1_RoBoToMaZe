@@ -193,6 +193,35 @@ new_game_button_coords = [150, 750, 150, 40]
 # Initializing the size of each grid cell
 cellSize = 75
 
+def bfs(robot, goal, obstacles, grid_coords):
+    visited = {robot}   
+    queue = [robot]
+    parent = {robot: None} # records path to back-track
+
+    while queue:
+        current = queue.pop(0)
+        # Check if goal state is reached
+        if (current[0] == goal[0] and current[1] == goal[1]):
+                break
+        
+        for neighbor in get_valid_neighbours(current, grid_coords, cellSize, obstacles):
+            if neighbor not in visited:
+                visited.add(neighbor)
+                parent[neighbor] = current
+                queue.append(neighbor)
+
+    if goal not in parent:
+        return None # Goal not reached
+        
+    path = []
+    node = goal        
+    while node is not None:
+        path.append(node)
+        node = parent[node]
+    path.reverse()
+
+    return path
+
 def main():
 
     reached_goal_flag = False
@@ -213,6 +242,9 @@ def main():
     # path contains the sequence of the cells that we click on while playing the game
     path = []
     path.append((75, 300))
+
+    bfs_path = bfs(robot_coords, goal_coords, obstacle_coords, grid_coords)
+    print(bfs_path)
 
     while True:
 
