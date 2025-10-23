@@ -328,12 +328,9 @@ def main():
 # Run the game by calling the main function
 
 def manhattanD(cell_a, cell_b, cellSize):
-
-        # Finish the function
     x1, y1 = cell_a
     x2, y2 = cell_b
-    m_distance = abs(x1 - x2) + abs(y1 - y2)
-    m_distance = m_distance * cellSize
+    m_distance = (abs(x1 - x2) + abs(y1 - y2)) // cellSize
     return m_distance
 
 def get_bfs_path(robot, goal, obstacles, grid_coords):
@@ -370,6 +367,13 @@ def manhattanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
     The only difference is that now you need to compute the Manhattan Distance.
     The rest of the code would be pretty much the same as in the previous function.
     '''
+    neighbors = get_valid_neighbours(current_cell, all_cells, cellSize, obstacles)
+    candidates = [current_cell] + neighbors
+    distances = {}
+    for cell in candidates:
+        distances[cell] = manhattanD(cell, goal_cell, cellSize)
+    sorted_distances = dict(sorted(distances.items(), key=lambda item: item[1]))
+    return sorted_distances
 
 def a_star(current_cell):
 
