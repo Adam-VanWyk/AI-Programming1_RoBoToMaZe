@@ -361,7 +361,17 @@ def euclideanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
     # Compute the distance between the current cell and the goal cell
     # Then, compute the distance between every legal neighbour of the current cell and the goal cell
     # Store these in the eDistances dictionary and return it sorted in ascending order of the distances
-
+    neighbors = [(x, y), (x-1, y), (x+1, y), (x, y-1), (x, y+1)]
+    for cell in neighbors:
+      if cell in all_cells:
+        # find difference in x and y from the goal
+        dx = cell[0] - xG
+        dy = cell[1] - yG
+        eDistances[cell] = (dx**2 + dy**2)**0.5
+    def sort_asc(kv):
+      return kv[1] 
+    eDistances = dict(sorted(eDistances.items(), key=sort_asc))
+    return eDistances
 
 def manhattanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
 
