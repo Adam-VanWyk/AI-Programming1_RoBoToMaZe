@@ -325,6 +325,89 @@ def main():
         clock.tick(60)
 
 # Run the game by calling the main function
+
+def manhattanD(cell_a, cell_b, cellSize):
+
+        # Finish the function
+    x1, y1 = cell_a
+    x2, y2 = cell_b
+    m_distance = abs(x1 - x2) + abs(y1 - y2)
+    m_distance = m_distance * cellSize
+    return m_distance
+
+def get_bfs_path(start, visited, all_cells, cellSize, obstacles, goal_cell):
+    ''' This function assumes it is used in connection with the code from programming 1.
+    start : the initial location (coordinates) of the robot
+    visited : the result of the bfs algorithm
+    all_cells : the coordintes of all the cells in the grid
+    cellSize : the size of each cell in the grid
+    obstacles: the coordinates of the cells that are obstacles
+    goal_cell : the coordinates of the target cell
+
+    The function should return a list of coordinates that if followed,
+    would lead one from the robot's initial position to the goal cell, through a sequence of legal moves
+    '''
+
+    path = []
+    # Flag for the while loop
+    running = True
+
+    # We will start backwards, from the goal cell and try to get to the starting location
+    curr = goal_cell
+
+    # the following should run until we reach the starting location of the robot
+    # Logic to implement: get the valid neighbours of the current cell, then try to find which of these
+    # are candidates to move to next - that is, must be in the visited structure.
+    # From the candidates, pick the one that has the smallest distance to the starting location.
+    # Add the picked candidate to the path, update the current cell to be the most recent candidate,
+    # update the visited structure (you don't want to be going in circles) and check if the candidate is the
+    # starting location
+    # Alternative logic: during BFS, you should maintain a structure that keeps track of who is whose child/parent
+    # and use that structure in this function to trace back from the goal state to the initial one, along with the visited structure
+
+    while running:
+        # Finish the function
+
+    # return path
+def path_cost():
+
+    # Finish the function
+
+def euclideanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
+    ''' Compute the Euclidean distance between every legal next cell and the goal cell.
+    Since this is meant to act as a heuristic (estimation of the actual distance), obstacles are not
+    taken into consideration as "obstacles".
+    current_cell : the coordinates of the current location of the robot
+    all_cells : the coordinates of all the cells in the grid
+    goal_cell : the coordinates of the target cell
+    cellSize : the size of a cell in the grid
+    obstacles : the coordinates of the cells that are obstacles
+
+    The function should return a dictionary where key,value is cell, distance of cell to goal cell, sorted in ascending order.
+    '''
+    x, y = current_cell
+    xG, yG = goal_cell
+    eDistances = {}
+
+    # Finish the function
+    # Compute the distance between the current cell and the goal cell
+    # Then, compute the distance between every legal neighbour of the current cell and the goal cell
+    # Store these in the eDistances dictionary and return it sorted in ascending order of the distances
+
+
+def manhattanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
+
+    ''' Exactly the same as in the euclideanDistance function.
+    The only difference is that now you need to compute the Manhattan Distance.
+    The rest of the code would be pretty much the same as in the previous function.
+    '''
+
+def a_star(current_cell):
+
+    # Finish the code
+
+    return f
+
 main()
 
 
