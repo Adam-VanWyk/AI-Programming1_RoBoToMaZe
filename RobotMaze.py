@@ -335,40 +335,9 @@ def manhattanD(cell_a, cell_b, cellSize):
     m_distance = m_distance * cellSize
     return m_distance
 
-def get_bfs_path(start, visited, all_cells, cellSize, obstacles, goal_cell):
-    ''' This function assumes it is used in connection with the code from programming 1.
-    start : the initial location (coordinates) of the robot
-    visited : the result of the bfs algorithm
-    all_cells : the coordintes of all the cells in the grid
-    cellSize : the size of each cell in the grid
-    obstacles: the coordinates of the cells that are obstacles
-    goal_cell : the coordinates of the target cell
+def get_bfs_path(robot, goal, obstacles, grid_coords):
+   return bfs(robot, goal, obstacles, grid_coords)
 
-    The function should return a list of coordinates that if followed,
-    would lead one from the robot's initial position to the goal cell, through a sequence of legal moves
-    '''
-
-    path = []
-    # Flag for the while loop
-    running = True
-
-    # We will start backwards, from the goal cell and try to get to the starting location
-    curr = goal_cell
-
-    # the following should run until we reach the starting location of the robot
-    # Logic to implement: get the valid neighbours of the current cell, then try to find which of these
-    # are candidates to move to next - that is, must be in the visited structure.
-    # From the candidates, pick the one that has the smallest distance to the starting location.
-    # Add the picked candidate to the path, update the current cell to be the most recent candidate,
-    # update the visited structure (you don't want to be going in circles) and check if the candidate is the
-    # starting location
-    # Alternative logic: during BFS, you should maintain a structure that keeps track of who is whose child/parent
-    # and use that structure in this function to trace back from the goal state to the initial one, along with the visited structure
-
-    while running:
-        # Finish the function
-
-    # return path
 def path_cost():
 
     # Finish the function
