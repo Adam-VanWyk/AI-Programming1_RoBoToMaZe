@@ -245,6 +245,7 @@ def main():
 
     bfs_path = bfs(robot_coords, goal_coords, obstacle_coords, grid_coords)
     print(bfs_path)
+    print(path_cost(bfs_path))
 
     while True:
 
@@ -338,9 +339,8 @@ def manhattanD(cell_a, cell_b, cellSize):
 def get_bfs_path(robot, goal, obstacles, grid_coords):
    return bfs(robot, goal, obstacles, grid_coords)
 
-def path_cost():
-
-    # Finish the function
+def path_cost(path):
+    return(len(path))
 
 def euclideanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
     ''' Compute the Euclidean distance between every legal next cell and the goal cell.
