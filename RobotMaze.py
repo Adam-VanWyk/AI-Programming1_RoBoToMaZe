@@ -303,7 +303,9 @@ def main():
 
                 if new_game_button_coords[0] <= mouse[0] <= new_game_button_coords[0]+200 and new_game_button_coords[1] <= mouse[1] <= new_game_button_coords[1]+50:
                     return main()
-
+                    
+                if robot_coords[0] <= mouse[0] <= robot_coords[0]+75 and robot_coords[1] <= mouse[1] <= robot_coords[1]+75:
+                    print("Robot has been clicked, implement the drawing")
                 # if the mouse clicks on a cell, then we need to see, is it a free legal cell? and therefore move the robot there
 
                 # Task 5.7 [7 Points]: Using the legalMove function, get the next position of the robot (assuming the click is legal)
