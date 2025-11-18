@@ -305,6 +305,11 @@ def main():
                     return main()
                     
                 if robot_coords[0] <= mouse[0] <= robot_coords[0]+75 and robot_coords[1] <= mouse[1] <= robot_coords[1]+75:
+                    i = 0
+                    for cell in get_valid_neighbours(robot_coords, grid_coords, cellSize, obstacle_coords):
+
+                        print("Neighbor " , i , ": " , manhattanD(cell ,goal_coords, cellSize))
+                        i+=1
                     print("Robot has been clicked, implement the drawing")
                 # if the mouse clicks on a cell, then we need to see, is it a free legal cell? and therefore move the robot there
 
