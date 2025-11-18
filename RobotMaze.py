@@ -222,6 +222,76 @@ def bfs(robot, goal, obstacles, grid_coords):
 
     return path
 
+def manhattanD(cell_a, cell_b, cellSize):
+    x1, y1 = cell_a
+    x2, y2 = cell_b
+    m_distance = (abs(x1 - x2) + abs(y1 - y2)) // cellSize
+    return m_distance
+
+def get_bfs_path(robot, goal, obstacles, grid_coords):
+   return bfs(robot, goal, obstacles, grid_coords)
+
+def path_cost(path):
+    return(len(path))
+
+def euclideanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
+    ''' Compute the Euclidean distance between every legal next cell and the goal cell.
+    Since this is meant to act as a heuristic (estimation of the actual distance), obstacles are not
+    taken into consideration as "obstacles".
+    current_cell : the coordinates of the current location of the robot
+    all_cells : the coordinates of all the cells in the grid
+    goal_cell : the coordinates of the target cell
+    cellSize : the size of a cell in the grid
+    obstacles : the coordinates of the cells that are obstacles
+
+    The function should return a dictionary where key,value is cell, distance of cell to goal cell, sorted in ascending order.
+    '''
+    x, y = current_cell
+    xG, yG = goal_cell
+    eDistances = {}
+
+    # Finish the function
+    # Compute the distance between the current cell and the goal cell
+    # Then, compute the distance between every legal neighbour of the current cell and the goal cell
+    # Store these in the eDistances dictionary and return it sorted in ascending order of the distances
+    neighbors = [(x, y), (x-1, y), (x+1, y), (x, y-1), (x, y+1)]
+    for cell in neighbors:
+      if cell in all_cells:
+        # find difference in x and y from the goal
+        dx = cell[0] - xG
+        dy = cell[1] - yG
+        eDistances[cell] = (dx**2 + dy**2)**0.5
+    def sort_asc(kv):
+      return kv[1] 
+    eDistances = dict(sorted(eDistances.items(), key=sort_asc))
+    return eDistances
+
+def manhattanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
+
+    ''' Exactly the same as in the euclideanDistance function.
+    The only difference is that now you need to compute the Manhattan Distance.
+    The rest of the code would be pretty much the same as in the previous function.
+    '''
+    neighbors = get_valid_neighbours(current_cell, all_cells, cellSize, obstacles)
+    candidates = [current_cell] + neighbors
+    distances = {}
+    for cell in candidates:
+        distances[cell] = manhattanD(cell, goal_cell, cellSize)
+    sorted_distances = dict(sorted(distances.items(), key=lambda item: item[1]))
+    return sorted_distances
+
+def a_star(current_cell, goal_coords, obstacle_coords, grid_coords):
+    bfs_path = bfs(current_cell, goal_coords, obstacle_coords, grid_coords)
+    bfs_path_cost = path_cost(bfs_path)
+
+    return bfs_path_cost + manhattanD(current_cell, goal_coords, cellSize)
+
+def a_star_list(current_cell, goal_coords, obstacle_coords, grid_coords):
+    bfs_path = bfs(current_cell, goal_coords, obstacle_coords, grid_coords)
+    bfs_path_cost = path_cost(bfs_path)
+
+    return [bfs_path_cost,  manhattanD(current_cell, goal_coords, cellSize)]
+
 def main():
 
     reached_goal_flag = False
@@ -307,6 +377,10 @@ def main():
                 if robot_coords[0] <= mouse[0] <= robot_coords[0]+75 and robot_coords[1] <= mouse[1] <= robot_coords[1]+75:
                     i = 0
                     for cell in get_valid_neighbours(robot_coords, grid_coords, cellSize, obstacle_coords):
+                        a_star = a_star_list(cell, goal_coords, obstacle_coords, grid_coords)
+                        output = str(a_star[0]) + ", " + str(a_star[1])
+                        text = make_text(tinyfont, output, 'black')
+                        make_rect_with_text(screen, colors["gray"], cell[0], cell[1], 10, 10, text[0], cell[0], cell[1])
 
                         print("Neighbor " , i , ": " , manhattanD(cell ,goal_coords, cellSize))
                         i+=1
@@ -334,69 +408,6 @@ def main():
 
 # Run the game by calling the main function
 
-def manhattanD(cell_a, cell_b, cellSize):
-    x1, y1 = cell_a
-    x2, y2 = cell_b
-    m_distance = (abs(x1 - x2) + abs(y1 - y2)) // cellSize
-    return m_distance
-
-def get_bfs_path(robot, goal, obstacles, grid_coords):
-   return bfs(robot, goal, obstacles, grid_coords)
-
-def path_cost(path):
-    return(len(path))
-
-def euclideanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
-    ''' Compute the Euclidean distance between every legal next cell and the goal cell.
-    Since this is meant to act as a heuristic (estimation of the actual distance), obstacles are not
-    taken into consideration as "obstacles".
-    current_cell : the coordinates of the current location of the robot
-    all_cells : the coordinates of all the cells in the grid
-    goal_cell : the coordinates of the target cell
-    cellSize : the size of a cell in the grid
-    obstacles : the coordinates of the cells that are obstacles
-
-    The function should return a dictionary where key,value is cell, distance of cell to goal cell, sorted in ascending order.
-    '''
-    x, y = current_cell
-    xG, yG = goal_cell
-    eDistances = {}
-
-    # Finish the function
-    # Compute the distance between the current cell and the goal cell
-    # Then, compute the distance between every legal neighbour of the current cell and the goal cell
-    # Store these in the eDistances dictionary and return it sorted in ascending order of the distances
-    neighbors = [(x, y), (x-1, y), (x+1, y), (x, y-1), (x, y+1)]
-    for cell in neighbors:
-      if cell in all_cells:
-        # find difference in x and y from the goal
-        dx = cell[0] - xG
-        dy = cell[1] - yG
-        eDistances[cell] = (dx**2 + dy**2)**0.5
-    def sort_asc(kv):
-      return kv[1] 
-    eDistances = dict(sorted(eDistances.items(), key=sort_asc))
-    return eDistances
-
-def manhattanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
-
-    ''' Exactly the same as in the euclideanDistance function.
-    The only difference is that now you need to compute the Manhattan Distance.
-    The rest of the code would be pretty much the same as in the previous function.
-    '''
-    neighbors = get_valid_neighbours(current_cell, all_cells, cellSize, obstacles)
-    candidates = [current_cell] + neighbors
-    distances = {}
-    for cell in candidates:
-        distances[cell] = manhattanD(cell, goal_cell, cellSize)
-    sorted_distances = dict(sorted(distances.items(), key=lambda item: item[1]))
-    return sorted_distances
-
-def a_star(current_cell, goal_coords, obstacle_coords, grid_coords):
-    bfs_path = bfs(current_cell, goal_coords, obstacle_coords, grid_coords)
-    bfs_path_cost = path_cost(bfs_path)
-
-    return bfs_path_cost + manhattanD(current_cell, goal_coords, cellSize)
 
 main()
 
