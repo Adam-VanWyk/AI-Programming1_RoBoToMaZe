@@ -387,11 +387,11 @@ def manhattanDistance(current_cell, all_cells, goal_cell, cellSize, obstacles):
     sorted_distances = dict(sorted(distances.items(), key=lambda item: item[1]))
     return sorted_distances
 
-def a_star(current_cell):
+def a_star(current_cell, goal_coords, obstacle_coords, grid_coords):
+    bfs_path = bfs(current_cell, goal_coords, obstacle_coords, grid_coords)
+    bfs_path_cost = path_cost(bfs_path)
 
-    # Finish the code
-
-    return f
+    return bfs_path_cost + manhattanD(current_cell, goal_coords, cellSize)
 
 main()
 
