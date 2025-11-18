@@ -88,6 +88,14 @@ def sample_cells(cells, number=1):
     return robot_cell, goal_cell, random.sample(cells_copy, number)
 
 
+
+
+
+def a_star_list(current_cell, goal_coords, obstacle_coords, grid_coords):
+    bfs_path = bfs(current_cell, goal_coords, obstacle_coords, grid_coords)
+    bfs_path_cost = path_cost(bfs_path)
+    return [bfs_path_cost,  manhattanD(current_cell, goal_coords, cellSize)]
+
 def legalMove(robot, clicked, rect_coords, obstacles, width, height, cellSize):
 
     ''' Are we trying to move the robot within the legal limits?
@@ -307,7 +315,9 @@ def main():
                 if robot_coords[0] <= mouse[0] <= robot_coords[0]+75 and robot_coords[1] <= mouse[1] <= robot_coords[1]+75:
                     print("robot clicked")
                     if check_neighbor_distances == False:
-                        check_neighbor_distances == True
+                        check_neighbor_distances = True
+                    elif check_neighbor_distances == True:
+                        check_neighbor_distances = False
                     
                 # if the mouse clicks on a cell, then we need to see, is it a free legal cell? and therefore move the robot there
 
@@ -329,8 +339,10 @@ def main():
         if check_neighbor_distances == True:
             i = 0
             for cell in get_valid_neighbours(robot_coords, grid_coords, cellSize, obstacle_coords):
-                text = make_text(tinyfont ,"test", 'black')
-                make_rect_with_text(screen, colors['white'], cell[0]+50,cell[1]+50,25,25,text[0],cell[0]+50,cell[1]+50)
+                a_star = a_star_list(cell, goal_coords, obstacle_coords, grid_coords)
+                output = str(a_star[0]) + ", " + str(a_star[1])
+                text = make_text(smallfont, output, 'black')
+                make_rect_with_text(screen, colors["gray"], cell[0], cell[1], 10, 10, text[0], cell[0], cell[1])
                 print("Neighbor " , i , ": " , manhattanD(cell ,goal_coords, cellSize))
                 i+=1
             print("Robot has been clicked, implement the drawing")
