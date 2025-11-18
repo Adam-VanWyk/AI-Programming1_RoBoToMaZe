@@ -225,7 +225,7 @@ def bfs(robot, goal, obstacles, grid_coords):
 def main():
 
     reached_goal_flag = False
-
+    check_neighbor_distances = False
     # Task 5.4 : We need to now draw the cells of our grid.
     # Produce the coordinates for the cells [2 Points]
     # Initialize the robot starting cell, the goal cell and the obstacle cells [3 Points]
@@ -305,12 +305,10 @@ def main():
                     return main()
                     
                 if robot_coords[0] <= mouse[0] <= robot_coords[0]+75 and robot_coords[1] <= mouse[1] <= robot_coords[1]+75:
-                    i = 0
-                    for cell in get_valid_neighbours(robot_coords, grid_coords, cellSize, obstacle_coords):
-
-                        print("Neighbor " , i , ": " , manhattanD(cell ,goal_coords, cellSize))
-                        i+=1
-                    print("Robot has been clicked, implement the drawing")
+                    print("robot clicked")
+                    if check_neighbor_distances == False:
+                        check_neighbor_distances == True
+                    
                 # if the mouse clicks on a cell, then we need to see, is it a free legal cell? and therefore move the robot there
 
                 # Task 5.7 [7 Points]: Using the legalMove function, get the next position of the robot (assuming the click is legal)
@@ -328,6 +326,14 @@ def main():
                         win_game[0], 150-(win_game_size[0]/2),
                        120 + (win_game_size[1]/2))
 
+        if check_neighbor_distances == True:
+            i = 0
+            for cell in get_valid_neighbours(robot_coords, grid_coords, cellSize, obstacle_coords):
+                text = make_text(tinyfont ,"test", 'black')
+                make_rect_with_text(screen, colors['white'], cell[0]+50,cell[1]+50,25,25,text[0],cell[0]+50,cell[1]+50)
+                print("Neighbor " , i , ": " , manhattanD(cell ,goal_coords, cellSize))
+                i+=1
+            print("Robot has been clicked, implement the drawing")
         # There always need to be a display update, so that, while the game runs, the objects that we wish appear on our screen
         pygame.display.update()
         clock.tick(60)
